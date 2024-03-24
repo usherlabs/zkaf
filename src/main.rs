@@ -2,16 +2,16 @@
 #![feature(const_trait_impl)]
 #![feature(effects)]
 
-use ark_ff::Field;
-use ark_pallas::Fq;
+// use ark_ff::Field;
+// use ark_pallas::Fq;
 
 // fn pow(a: Fq, n: u32) -> Fq {
 //     (0..n).fold(Fq::ONE, |acc, _| acc * a)
 // }
 
 #[circuit]
-pub fn main(a: Fq, b: Fq) {
-    assert_eq!(a, b)
+pub fn main(a: i32, b: i32) -> bool {
+    return a == b
 }
 
 // pub fn field_arithmetic_example(a: Fq, b: Fq) -> Fq {

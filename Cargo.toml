@@ -1,6 +1,6 @@
 [package]
-name = "zkllvm-rust-template"
-version = "0.1.0"
+name = "zkoracle"
+version = "0.0.1"
 edition = "2021"
 
 [dependencies]

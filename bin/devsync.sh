@@ -5,4 +5,4 @@ shift
 
 echo "Synchronising local repository to remote server at $OPERATION...";
 
-rsync -azP -e ssh ./ $OPERATION:~/zkoracle/
+rsync -vhra -e ssh ./ $OPERATION:~/zkoracle/ --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore' --delete-after

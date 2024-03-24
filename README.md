@@ -1,4 +1,6 @@
-# zkLLVM Rust template
+# zkOracle 
+
+*Fork of zkLLVM Rust template*
 
 [![Tutorial check](https://github.com/NilFoundation/zkllvm-rust-template/actions/workflows/main.yml/badge.svg)](https://github.com/NilFoundation/zkllvm-rust-template/actions/workflows/main.yml)
 
@@ -21,13 +23,18 @@ On most of the modern Linux-based platforms you will already have these installe
 
 ### Table of contents
 
-- [Introduction](#introduction)
-- [Getting started](#getting-started)
-- [Building code](#building-rust-code)
-- [Generating circuit](#generating-circuit)
-- [Generating proof locally](#generating-proof-locally)
-- [Uploading circuit statement to Proof Market](#uploading-circuit-statement-to-proof-market)
-- [Verifying proof on EVM](#verifying-proof-on-evm)
+- [zkOracle](#zkoracle)
+  - [Prerequisites](#prerequisites)
+    - [Table of contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Getting started](#getting-started)
+    - [Install zkLLVM toolchain](#install-zkllvm-toolchain)
+    - [Clone repository](#clone-repository)
+  - [Building Rust code](#building-rust-code)
+  - [Generating circuit](#generating-circuit)
+  - [Generating proof locally](#generating-proof-locally)
+  - [Uploading circuit statement to Proof Market](#uploading-circuit-statement-to-proof-market)
+  - [Verifying proof on EVM](#verifying-proof-on-evm)
 
 ## Introduction
 
