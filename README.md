@@ -1,6 +1,6 @@
-# zkOracle 
+# zkOracle Framework
 
-*Fork of zkLLVM Rust template*
+> Fork of zkLLVM Rust template
 
 [![Tutorial check](https://github.com/NilFoundation/zkllvm-rust-template/actions/workflows/main.yml/badge.svg)](https://github.com/NilFoundation/zkllvm-rust-template/actions/workflows/main.yml)
 
@@ -23,7 +23,7 @@ On most of the modern Linux-based platforms you will already have these installe
 
 ### Table of contents
 
-- [zkOracle](#zkoracle)
+- [zkOracle Framework](#zkoracle-framework)
   - [Prerequisites](#prerequisites)
     - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)

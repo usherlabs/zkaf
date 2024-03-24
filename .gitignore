@@ -5,11 +5,13 @@
 Cargo.lock
 
 # Circuit-related generated files
-/*.crct
-/*.tbl
-/*.bin
-/*.json
-/*.sol
+output/*.crct
+output/*.tbl
+output/*.bin
+output/*.json
+output/*.sol
+output/*
+!output/.gitkeep
 
 # dependencies
 vendor
