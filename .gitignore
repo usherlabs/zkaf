@@ -5,6 +5,7 @@
 Cargo.lock
 
 # Circuit-related generated files
+output-*
 output/*.crct
 output/*.tbl
 output/*.bin
