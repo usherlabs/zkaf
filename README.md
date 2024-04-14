@@ -8,6 +8,14 @@
 docker build . -t zkaf --platform linux/amd64
 ```
 
+### Test the Image
+
+```shell
+docker run --platform linux/amd64 --rm -t zkaf:latest cargo --version
+```
+
+This should respond with something like `cargo 1.77.2 (e52e36006 2024-03-26)`
+
 ### Build the Circuit
 
 ```shell
@@ -17,7 +25,6 @@ docker run \
   --platform linux/amd64 \
   cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
 ```
-
 
 ## Ubuntu
 

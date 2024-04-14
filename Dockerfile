@@ -1,102 +1,19 @@
-# FROM rust:1-bookworm as boost_builder
-# RUN DEBIAN_FRONTEND=noninteractive \
-#     set -xe \
-#     && apt-get update \
-#     && apt-get -y --no-install-recommends --no-install-suggests install \
-#         autoconf \
-#         automake \
-#         build-essential \
-#         wget \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
-
-# # using global args with their default versions
-# ARG BOOST_VERSION
-# ARG BOOST_VERSION_UNDERSCORED
-# ARG BOOST_SETUP_DIR
-# ARG BOOST_BUILD_DIRECTORY
-
-# WORKDIR /tmp
-# RUN set -xe \
-#     && wget -q --no-check-certificate \
-#       https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_UNDERSCORED}.tar.gz \
-#     && mkdir ${BOOST_BUILD_DIRECTORY} \
-#     && tar -xvf boost_${BOOST_VERSION_UNDERSCORED}.tar.gz \
-#     && rm boost_${BOOST_VERSION_UNDERSCORED}.tar.gz
-
-# WORKDIR ${BOOST_BUILD_DIRECTORY}
-# RUN set -xe \
-#     && sh ./bootstrap.sh --prefix=${BOOST_SETUP_DIR} \
-#     && ./b2 --prefix=${BOOST_SETUP_DIR} \
-#     && ./b2 install --prefix=${BOOST_SETUP_DIR}
-
-
-# FROM rust:1-bookworm
-# LABEL Name=build-base Version=1.76.0
-# # using global args with their default versions
-# ARG BOOST_SETUP_DIR
-
-# COPY --from=boost_builder ${BOOST_SETUP_DIR} ${BOOST_SETUP_DIR}
-# ENV BOOST_ROOT=${BOOST_SETUP_DIR}
-
 # build to ghcr.io/nilfoundation/zkllvm-template:latest
-# FROM ghcr.io/nilfoundation/build-base:1.76.0
+FROM ghcr.io/nilfoundation/build-base:1.76.0
 
-# LABEL maintainer="Usher Labs <ryan@usher.so>"
-
-# ARG ZKLLVM_VERSION=0.1.18
-
-# ENV RUST_VERSION=1.77.2 \
-# 	PATH=/root/.cargo/bin:$PATH
-
-# RUN DEBIAN_FRONTEND=noninteractive \
-#     echo 'deb [trusted=yes]  http://deb.nil.foundation/ubuntu/ all main' >> /etc/apt/sources.list \
-#     && apt-get update \
-#     && apt-get -y --no-install-recommends --no-install-suggests install \
-#       build-essential \
-#       cmake \
-#       git \
-#       zkllvm=${ZKLLVM_VERSION} \
-#       proof-producer \
-#       llvm \
-#       python3 \
-#       curl \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
-
-# RUN [[ $(uname -m) == "x86_64" ]] && ARCH="x86_64" || ARCH="aarch64" && \
-# RUN curl -O https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init && \
-#     chmod +x rustup-init && \
-#     ./rustup-init -y --no-modify-path --default-toolchain $RUST_VERSION && \
-#     rm rustup-init && \
-#     rustc --version && \
-#     cargo --version
-
-# RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-# ENV PATH="/root/.cargo/bin:${PATH}"
-
-# RUN curl --proto '=https' --tlsv1.2 -sSf https://cdn.jsdelivr.net/gh/NilFoundation/zkllvm@master/rslang-installer.py | python3 - --channel nightly
-
-# WORKDIR /user/src/zkaf
-
-# # Copy the current directory contents into the container at /usr/src/app
-# COPY . .
-
-# # Build the Rust app using Cargo
-# RUN cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
-
-FROM ubuntu:22.04
+LABEL maintainer="Usher Labs <ryan@usher.so>"
 
 RUN DEBIAN_FRONTEND=noninteractive \
+    echo 'deb [trusted=yes]  http://deb.nil.foundation/ubuntu/ all main' >> /etc/apt/sources.list \
     && apt-get update \
     && apt-get -y --no-install-recommends --no-install-suggests install \
       build-essential \
       cmake \
       git \
       ca-certificates \
-      # zkllvm=${ZKLLVM_VERSION} \
-      # proof-producer \
-      # llvm \
+      zkllvm \
+      proof-producer \
+      llvm \
       python3 \
       curl \
       wget \
@@ -128,3 +45,13 @@ RUN set -eux; \
     rustup --version; \
     cargo --version; \
     rustc --version;
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://cdn.jsdelivr.net/gh/NilFoundation/zkllvm@master/rslang-installer.py | python3 - --channel nightly
+
+WORKDIR /user/src/zkaf
+
+# # Copy the current directory contents into the container at /usr/src/app
+COPY . .
+
+# # Build the Rust app using Cargo
+RUN cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
