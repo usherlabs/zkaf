@@ -5,7 +5,7 @@
 ### Build the Image
 
 ```shell
-docker build . -t zkaf
+docker build . -t zkaf --platform linux/amd64
 ```
 
 ### Build the Circuit
