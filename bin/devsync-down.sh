@@ -5,4 +5,4 @@ shift
 
 echo "Pulling output from remote server at $OPERATION...";
 
-rsync -azP -e ssh $OPERATION:~/zkoracle/output/ ./output/
+rsync -azP -e ssh $OPERATION:~/zkaf/output/ ./output/

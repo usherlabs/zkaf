@@ -1,5 +1,14 @@
 # WIP: ZK Attestation Framework - by [Usher Labs](https://www.usher.so)
 
+## Prerequisites across deployments
+
+Supported platforms:
+
+- Linux x86-64
+
+Docker must operate on a compatible OS to work.
+**Apple Silicon:** Is not compatible even with `--platform linux/amd64`.
+
 ## Docker
 
 ### Build the Image
@@ -14,6 +23,12 @@ docker build . -t zkaf --platform linux/amd64
 docker run --platform linux/amd64 --rm -t zkaf:latest cargo --version
 ```
 
+### SSH into Image
+
+```shell
+docker run --platform linux/amd64 -it zkaf:latest /bin/bash
+```
+
 This should respond with something like `cargo 1.77.2 (e52e36006 2024-03-26)`
 
 ### Build the Circuit
@@ -26,13 +41,9 @@ docker run \
   cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
 ```
 
-## Ubuntu
+## Base OS (Ubuntu)
 
 ### Prerequisites
-
-Supported platforms:
-
-- Linux x86-64
 
 Dependencies:
 

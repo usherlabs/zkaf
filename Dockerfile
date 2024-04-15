@@ -3,10 +3,12 @@ FROM ghcr.io/nilfoundation/build-base:1.76.0
 
 LABEL maintainer="Usher Labs <ryan@usher.so>"
 
+WORKDIR /opt/zkaf
+
 RUN DEBIAN_FRONTEND=noninteractive \
     echo 'deb [trusted=yes]  http://deb.nil.foundation/ubuntu/ all main' >> /etc/apt/sources.list \
     && apt-get update \
-    && apt-get -y --no-install-recommends --no-install-suggests install \
+    && apt-get -y install \
       build-essential \
       cmake \
       git \
@@ -46,12 +48,10 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://cdn.jsdelivr.net/gh/NilFoundation/zkllvm@master/rslang-installer.py | python3 - --channel nightly
+RUN curl --proto '=https' --tlsv1.2 -sSf https://cdn.jsdelivr.net/gh/NilFoundation/zkllvm@master/rslang-installer.py | python3 - --channel nightly --rustup-home $RUSTUP_HOME
 
-WORKDIR /user/src/zkaf
-
-# # Copy the current directory contents into the container at /usr/src/app
+# # Copy the current directory contents into the container at root /root or ~/
 COPY . .
 
 # # Build the Rust app using Cargo
-RUN cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
+# RUN cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
