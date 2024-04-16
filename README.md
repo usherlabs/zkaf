@@ -1,49 +1,47 @@
 # WIP: ZK Attestation Framework - by [Usher Labs](https://www.usher.so)
 
-## Prerequisites across deployments
+## Supported platforms
 
-Supported platforms:
-
-- Linux x86-64
+- **Linux x86-64**
 
 Docker must operate on a compatible OS to work.
 **Apple Silicon:** Is not compatible even with `--platform linux/amd64`.
 
-## Docker
+## Installation
 
-### Build the Image
+### Docker
 
-```shell
-docker build . -t zkaf --platform linux/amd64
-```
-
-### Test the Image
+#### Build the Image
 
 ```shell
-docker run --platform linux/amd64 --rm -t zkaf:latest cargo --version
+docker build . -t zkaf
 ```
 
-### SSH into Image
+#### Test the Image
 
 ```shell
-docker run --platform linux/amd64 -it zkaf:latest /bin/bash
+docker run --rm -t zkaf:latest cargo --version
 ```
 
-This should respond with something like `cargo 1.77.2 (e52e36006 2024-03-26)`
+*This should respond with something like `cargo 1.77.2 (e52e36006 2024-03-26)`*
 
-### Build the Circuit
+#### SSH into Image
 
 ```shell
-docker run \
-  -v ./:/opt/zkaf/ \
-  -t zkaf:latest \
-  --platform linux/amd64 \
-  cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
+docker run -v ./:/opt/zkaf/ -it zkaf:latest /bin/bash
 ```
 
-## Base OS (Ubuntu)
+#### Command Prefixing
 
-### Prerequisites
+To continue operating all of the circuit build and generation instructions, simply prefix the commands with: 
+
+```shell
+docker run -v ./:/opt/zkaf/ -t zkaf:latest <insert zkllvm circuit command>
+```
+
+### Base OS (Ubuntu)
+
+#### Prerequisites
 
 Dependencies:
 
@@ -53,7 +51,7 @@ Dependencies:
 
 On most of the modern Linux-based platforms you will already have these installed.
 
-### Install
+#### Install
 
 Reference: [https://github.com/NilFoundation/zkllvm-rust-template](https://github.com/NilFoundation/zkllvm-rust-template)
 
@@ -70,7 +68,7 @@ sudo apt install llvm
 curl --proto '=https' --tlsv1.2 -sSf https://cdn.jsdelivr.net/gh/NilFoundation/zkllvm@master/rslang-installer.py | python3 - --channel nightly
 ```
 
-### Build
+## Build
 
 ```bash
 cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
@@ -87,7 +85,7 @@ This is used to produce the **circuit and assignment table.**
 Instead return a boolean, or some value, or `nil`.
 </aside>
 
-### Circuit Generation
+## Circuit Generation
 
 Here we use the `assigner` CLI tool.
 
@@ -97,7 +95,7 @@ This takes two inputs:
 2. an input file in a JSON format, which contains input values for your circuit function.
 
 ```bash
-assigner -b target/assigner-unknown-unknown/release/zkllvm-rust-template.ll -i inputs/example.inp -t assignment.tbl -c circuit.crct -e pallas
+assigner -b target/assigner-unknown-unknown/release/zkaf.ll -i inputs/example.json -t output/assignment.tbl -c output/circuit.crct -e pallas
 ```
 
 However, the default Rust circuit logic within the `zkLLVM-rust-tempate` , will not compile. Changing this may indeed work.
@@ -106,26 +104,26 @@ However, the default Rust circuit logic within the `zkLLVM-rust-tempate` , will 
 💡 To write to an `output` directory, be sure to `mkdir` prior to the `assigner` execution
 </aside>
 
-### Transpile to EVM Proof Verifier
+## Transpile to EVM Proof Verifier
 
 From within the `output` dir,
 
 For Test Proof that is locally verified:
 
 ```bash
-transpiler -m gen-test-proof -i ../inputs/example-same.json -c circuit.crct -t assignment.tbl -e pallas -o ./
+transpiler -m gen-test-proof -i inputs/example.json -c output/circuit.crct -t output/assignment.tbl -e pallas -o ./output/proof
 ```
 
 Unsure what the difference here is with using:
 
 ```bash
-proof-generator-multi-threaded --circuit circuit.crct --assignment assignment.tbl --proof proof-2.bin
+proof-generator-multi-threaded --circuit output/circuit.crct --assignment output/assignment.tbl --proof output/proof-2/proof.bin
 ```
 
 For EVM Verifier:
 
 ```bash
-transpiler -m gen-evm-verifier -i ../inputs/example-same.json -c circuit.crct -t assignment.tbl -e pallas -o ./verifier
+transpiler -m gen-evm-verifier -i inputs/example.json -c output/circuit.crct -t output/assignment.tbl -e pallas -o ./output/verifier
 ```
 
 The `modular_verifier.sol` is the entrypoint.
@@ -136,9 +134,9 @@ The `modular_verifier.sol` is the entrypoint.
 pnpm use-sol-deps
 ```
 
-### Notes
+## Notes
 
-#### Public vs Private Inputs
+### Public vs Private Inputs
 
 - Public Inputs are provided all the way through to verification on-chain.
 - Private Inputs are passed only into the assignment step

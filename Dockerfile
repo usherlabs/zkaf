@@ -51,7 +51,7 @@ RUN set -eux; \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://cdn.jsdelivr.net/gh/NilFoundation/zkllvm@master/rslang-installer.py | python3 - --channel nightly --rustup-home $RUSTUP_HOME
 
 # # Copy the current directory contents into the container at root /root or ~/
-COPY . .
+# COPY . .
 
 # # Build the Rust app using Cargo
 # RUN cargo +zkllvm build --release --target assigner-unknown-unknown --features=zkllvm
