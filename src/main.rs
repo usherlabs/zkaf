@@ -2,20 +2,15 @@
 #![feature(const_trait_impl)]
 #![feature(effects)]
 
-// use ark_ff::Field;
-// use ark_pallas::Fq;
-
-// fn pow(a: Fq, n: u32) -> Fq {
-//     (0..n).fold(Fq::ONE, |acc, _| acc * a)
-// }
+pub mod utils;
 
 #[circuit]
 pub fn main(a: i32, b: i32) -> bool {
+    // compile proof verification route
+    // basically take in the proof as a stringified json
+    // then verify it
+    // basically the same logic as the verifier in the mpc tls process
+
+    //test would be if the libraries can be compiled to the correct target
     return a == b
 }
-
-// pub fn field_arithmetic_example(a: Fq, b: Fq) -> Fq {
-    // let c = (a + b) * a + b * (a + b) * (a + b);
-    // const CONSTANT: Fq = MontFp!("0x12345678901234567890");
-    // c * c * c / (b - a) + pow(a, 2) + CONSTANT
-// }
