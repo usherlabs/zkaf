@@ -6,7 +6,6 @@ use getrandom_runtime_seeded::init_getrandom;
 use hex;
 use zkaf::utils::verify_proof;
 use std::str;
-use utils::verify_proof;
 
 #[circuit]
 pub fn main(enc_proof: &str, enc_pub_key: &str) -> bool {
@@ -21,9 +20,9 @@ pub fn main(enc_proof: &str, enc_pub_key: &str) -> bool {
     let proof_bytes = hex::decode(enc_proof).unwrap();
     let pub_key_bytes = hex::decode(enc_pub_key).unwrap();
     let proof = str::from_utf8(&proof_bytes).unwrap();
-    let pub_key = str::from_utf8(&pub_key_bytes);
+    let pub_key = str::from_utf8(&pub_key_bytes).unwrap();
 
-    let res = verify_proof(proof, pub_key);
+    let res = verify_proof(&proof.to_string(), &pub_key.to_string());
 
     return match res {
         Ok(_) => true,
