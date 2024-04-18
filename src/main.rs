@@ -3,15 +3,14 @@
 #![feature(effects)]
 
 pub mod utils;
-mod rand;
 
-use getrandom::register_custom_getrandom;
-
-register_custom_getrandom!(rand::always_fail);
-
+use getrandom_runtime_seeded::init_getrandom;
 
 #[circuit]
 pub fn main(a: i32, b: i32) -> bool {
+    // use a real seed here from a secure source (not a hardcoded one)
+    init_getrandom([0u8; 32]);
+
     // compile proof verification route
     // basically take in the proof as a stringified json
     // then verify it
