@@ -1,5 +1,7 @@
 // mod rand;
 
+pub mod utils;
+
 use getrandom::register_custom_getrandom;
 use getrandom_runtime_seeded::seeded_with_runtime_chacha_rng;
 
