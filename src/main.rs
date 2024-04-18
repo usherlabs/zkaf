@@ -3,6 +3,12 @@
 #![feature(effects)]
 
 pub mod utils;
+mod rand;
+
+use getrandom::register_custom_getrandom;
+
+register_custom_getrandom!(rand::always_fail);
+
 
 #[circuit]
 pub fn main(a: i32, b: i32) -> bool {
