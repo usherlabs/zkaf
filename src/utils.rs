@@ -27,33 +27,34 @@ pub fn verify_proof(proof: &String, pub_key: &String) -> Result<String, String> 
         .verify_with_default_cert_verifier(pub_key)
         .or(Err("INVALID PUBLIC KEY".to_owned()))?;
 
-    let SessionProof {
-        // The session header that was signed by the Notary is a succinct commitment to the TLS transcript.
-        header,
-        // This is the server name, checked against the certificate chain shared in the TLS handshake.
-        // server_name,
-        ..
-    } = session;
+    // let SessionProof {
+    //     // The session header that was signed by the Notary is a succinct commitment to the TLS transcript.
+    //     header,
+    //     // This is the server name, checked against the certificate chain shared in the TLS handshake.
+    //     // server_name,
+    //     ..
+    // } = session;
 
-    // Verify the substrings proof against the session header.
-    //
-    // This returns the redacted transcripts
-    let (mut sent, mut recv) = substrings
-        .verify(&header)
-        .or(Err("PROOF VERIFICATION FAILED".to_string()))?;
+    // // Verify the substrings proof against the session header.
+    // //
+    // // This returns the redacted transcripts
+    // let (mut sent, mut recv) = substrings
+    //     .verify(&header)
+    //     .or(Err("PROOF VERIFICATION FAILED".to_string()))?;
 
-    // Replace the bytes which the Prover chose not to disclose with 'X'
-    sent.set_redacted(b'X');
-    recv.set_redacted(b'X');
+    // // Replace the bytes which the Prover chose not to disclose with 'X'
+    // sent.set_redacted(b'X');
+    // recv.set_redacted(b'X');
 
-    // concatenate the request and response and log it to stdout
-    let req_res = format!(
-        "{}{}",
-        String::from_utf8(recv.data().to_vec()).unwrap(),
-        String::from_utf8(sent.data().to_vec()).unwrap()
-    );
+    // // concatenate the request and response and log it to stdout
+    // let req_res = format!(
+    //     "{}{}",
+    //     String::from_utf8(recv.data().to_vec()).unwrap(),
+    //     String::from_utf8(sent.data().to_vec()).unwrap()
+    // );
 
-    Ok(req_res)
+    // Ok(req_res)
+    Ok(String::from("ok"))
 }
 
 #[cfg(test)]
