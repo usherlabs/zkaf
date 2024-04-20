@@ -1,16 +1,14 @@
 #![no_main]
-#![feature(const_trait_impl)]
-#![feature(effects)]
 
-use getrandom_runtime_seeded::init_getrandom;
+// use getrandom_runtime_seeded::init_getrandom;
 // use hex;
 // use zkaf::utils::verify_proof;
 // use std::str;
 
 #[circuit]
-pub fn main(_proof: &str, _pub_key: &str) -> bool {
+pub fn main(_proof: u64, _pub_key: u64) -> bool {
     // TODO: use a real seed here from a secure source (not a hardcoded one)
-    init_getrandom([0u8; 32]);
+    // init_getrandom([0u8; 32]);
 
     // compile proof verification route
     // basically take in the proof as a stringified json
